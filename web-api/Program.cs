@@ -4,7 +4,10 @@ using web_api.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+});
 
 // Register DbContext with SQL Server (change connection string as needed)
 builder.Services.AddDbContext<WebAPIDbContext>(options =>
