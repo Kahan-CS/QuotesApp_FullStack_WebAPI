@@ -1,11 +1,11 @@
 @web_api_HostAddress = http://localhost:5051
 
-### Get all quotes (first page)
-GET {{web_api_HostAddress}}/api/quotes?page=1&pageSize=10
+### Get all quotes
+GET {{web_api_HostAddress}}/api/quotesapi?page=13&pageSize=-1
 Accept: application/json
 
-### Get quote by ID (example: ID = 1)
-GET {{web_api_HostAddress}}/api/quotes/1
+### Get quote by ID
+GET {{web_api_HostAddress}}/api/quotesapi/1
 Accept: application/json
 
 ### Get top 10 quotes by likes

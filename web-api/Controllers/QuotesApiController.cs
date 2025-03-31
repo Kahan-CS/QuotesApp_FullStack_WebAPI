@@ -24,11 +24,39 @@ namespace web_api.Controllers
                 .Include(q => q.TagAssignments)
                     .ThenInclude(ta => ta.Tag);
 
+
+            var totalQuotes = await _context.Quotes.CountAsync();
+            // If there are no quotes, return a custom error response
+            if (totalQuotes == 0)
+            {
+                return StatusCode(204, new { message = "No quotes available." }); // 204 No Content
+            }
+
+
+
             // We also want to consider a situation where we may need all of the quotes at once,
             // hence '-1' in pagesize will be our flag
             if (pageSize != -1)
-                //query = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Models.Quote, Models.Tag>)query.Skip((page - 1) * pageSize).Take(pageSize);
-                query = query.Skip((page - 1) * pageSize).Take(pageSize);
+            {
+
+                // remaining quotes ==> based on page and pageSize
+                var remainingQuotes = totalQuotes - (page - 1) * pageSize;
+
+                if (remainingQuotes <= 0)
+                {
+                    return StatusCode(404, new { message = "No quotes available for the requested page." }); // 404 Not Found
+                }
+                if (remainingQuotes < pageSize)
+                {
+                    query = query.Skip((page - 1) * pageSize).Take(remainingQuotes);
+                }
+                else
+                {
+                    query = query.Skip((page - 1) * pageSize).Take(pageSize);
+
+                }
+
+            }
 
 
             var quotes = await query.ToListAsync();
