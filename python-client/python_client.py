@@ -57,7 +57,8 @@ def load_and_add_quotes():
     refresh_quotes_list()  # Refresh the quotes list after adding a new quote
             
 
-# Function to refresh the quotes list by making a GET request to the API
+# Function to refresh the quotes list by making a GET request to the API. 
+# This way we have better control over the GET request occurances (as needed)
 def refresh_quotes_list():
     response = requests.get(f"{API_URL}?page=1&pageSize=-1")
     if response.status_code == 200:
@@ -75,6 +76,7 @@ def main():
     
     # Initially load quotes from the API
     refresh_quotes_list()
+    
     while True:
         print("\n--- Python Client -Menu ---")
         print("1. Load quotes from file")
