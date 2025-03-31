@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using web_api.Data;
+using web_api.Models;
 
 namespace web_api.Controllers
 {
@@ -19,14 +20,16 @@ namespace web_api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetQuotes([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var query = _context.Quotes
+            IQueryable<Quote> query = _context.Quotes
                 .Include(q => q.TagAssignments)
                     .ThenInclude(ta => ta.Tag);
 
             // We also want to consider a situation where we may need all of the quotes at once,
             // hence '-1' in pagesize will be our flag
             if (pageSize != -1)
-                query = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Models.Quote, Models.Tag>)query.Skip((page - 1) * pageSize).Take(pageSize);
+                //query = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Models.Quote, Models.Tag>)query.Skip((page - 1) * pageSize).Take(pageSize);
+                query = query.Skip((page - 1) * pageSize).Take(pageSize);
+
 
             var quotes = await query.ToListAsync();
             return Ok(quotes);
