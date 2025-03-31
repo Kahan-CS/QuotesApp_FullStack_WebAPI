@@ -25,6 +25,12 @@ h1 {
   font-size: 14px;
 }
 
+.filter-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .quotes-grid {
   display: flex;
   flex-direction: column;
