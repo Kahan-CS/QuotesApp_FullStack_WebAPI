@@ -249,5 +249,24 @@ namespace web_api.Controllers
             return Ok(quote);
         }
 
+
+        // DELETE: api/quotesapi/{id}/tags
+        // Removes all tags from a quote.
+        [HttpDelete("{id}/tags")]
+        public async Task<IActionResult> RemoveAllTagsFromQuote(int id)
+        {
+            var quote = await _context.Quotes
+                .Include(q => q.TagAssignments)
+                .FirstOrDefaultAsync(q => q.QuoteId == id);
+            if (quote == null)
+                return NotFound();
+
+            _context.TagAssignments.RemoveRange(quote.TagAssignments);
+            await _context.SaveChangesAsync();
+
+            return Ok(quote);
+        }
+
+
     }
 }
