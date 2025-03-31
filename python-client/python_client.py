@@ -28,6 +28,7 @@ def add_new_quote():
     response = requests.post(API_URL, json=quote)
     if response.status_code == 201:
         print(f"Successfully added quote: {content}")
+        refresh_quotes_list()  # Refresh the quotes list after adding a new quote
     else:
         print(f"Failed to add quote. Status code: {response.status_code}")
 
@@ -52,15 +53,35 @@ def load_and_add_quotes():
             print(f"Successfully added: {quote['content']}")
         else:
             print(f"Failed to add: {quote['content']} - {response.status_code}")
+            
+    refresh_quotes_list()  # Refresh the quotes list after adding a new quote
+            
+
+# Function to refresh the quotes list by making a GET request to the API
+def refresh_quotes_list():
+    response = requests.get(f"{API_URL}?page=1&pageSize=-1")
+    if response.status_code == 200:
+        global quotes_in_memory
+        quotes_in_memory = response.json()  # Store the updated list of quotes in memory
+        print(f"Quotes list refreshed. {len(quotes_in_memory)} quotes available.")
+    else:
+        print("Failed to refresh the quotes list from the API")
+
+
+
 
 # Main function to interact with the user
 def main():
+    
+    # Initially load quotes from the API
+    refresh_quotes_list()
     while True:
         print("\n--- Python Client -Menu ---")
         print("1. Load quotes from file")
         print("2. Add a new quote")
         print("3. Display a random quote")
-        print("4. Exit")
+        print("4. Refresh quotes list")
+        print("5. Exit")
         
         choice = input("Enter your choice: ")
         
@@ -71,6 +92,8 @@ def main():
         elif choice == '3':
             get_random_quote()
         elif choice == '4':
+            refresh_quotes_list()  # Option to manually refresh the quotes list
+        elif choice == '5':            
             print("Exiting...")
             break
         else:
