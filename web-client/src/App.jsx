@@ -276,9 +276,9 @@ function App() {
                         <input
               type="text"
               placeholder="Tags (comma-separated)..."
-              value={newQuote.tags}
+              value={currentQuote.tags}
               onChange={(e) => {
-                setCurrentQuote({ ...newQuote, tags: e.target.value });
+                setCurrentQuote({ ...currentQuote, tags: e.target.value });
                 handleTagInput(e.target.value);
               }}
             />

@@ -9,5 +9,5 @@ GET {{web_api_HostAddress}}/api/quotesapi/1
 Accept: application/json
 
 ### Get top 10 quotes by likes
-GET {{web_api_HostAddress}}/api/quotes/top?count=10
+GET {{web_api_HostAddress}}/api/quotesapi/top?count=10
 Accept: application/json
